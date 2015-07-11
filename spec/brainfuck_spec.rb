@@ -22,7 +22,7 @@ describe Brainfuck do
     end
 
     it 'can send the pointer to an address in memory' do
-      increase_pointer_by_3
+      set_pointer_to_third_position
       interpreter.memory[interpreter.pointer] = :test
       expect(interpreter.memory[2]).to eq(:test)
     end
@@ -33,21 +33,22 @@ describe Brainfuck do
     end
 
     it 'can decrement the pointer' do
-      increase_pointer_by_3
+      set_pointer_to_third_position
       interpreter.decrement_pointer
       expect(interpreter.pointer).to eq(1)
     end
 
     it 'can increase the value at a specific memory address' do
-      increase_pointer_by_3
+      set_pointer_to_third_position
       interpreter.increase_value
       expect(interpreter.memory[2]).to eq(1)
     end
 
     it 'can decrease the value at a specific memory address' do
-      increase_pointer_by_3
+      set_pointer_to_third_position
       interpreter.increase_value
       expect(interpreter.memory[2]).to eq(1)
+
       interpreter.decrease_value
       expect(interpreter.memory[2]).to eq(0)
     end
@@ -57,12 +58,21 @@ describe Brainfuck do
 
     it 'increments the value at the current pointer when it sees a "+"' do
       interpreter.receive_instructions("+")
-      interpreter.parse
+      interpreter.run_methods
       expect(interpreter.memory.first).to eq(1)
+    end
+
+    it 'decrements the value at the current pointer when it sees a "-"' do
+      interpreter.increase_value
+      expect(interpreter.memory.first).to eq(1)
+
+      interpreter.receive_instructions("-")
+      interpreter.run_methods
+      expect(interpreter.memory.first).to eq(0)
     end
   end
 
-  def increase_pointer_by_3
+  def set_pointer_to_third_position
     interpreter.pointer = 2
   end
 end

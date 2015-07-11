@@ -1,10 +1,11 @@
 class Brainfuck
 
-  attr_reader   :interpreter_stream,
-                :increase_value
+  attr_reader   :interpreter_stream
   attr_accessor :memory, :pointer
 
-  METHOD_LOOKUP = { "+" => IncreaseValue }
+  METHOD_LOOKUP = { "+" => :increase_value,
+                    "-" => :decrease_value
+                  }
 
 
   def initialize
@@ -24,24 +25,18 @@ class Brainfuck
     self.pointer -= 1
   end
 
-  #def increase_value
-    #memory[pointer] += 1
-  #end
-
-  #@increase_value = Proc.new { memory[pointer] += 1 }
+  def increase_value
+    memory[pointer] += 1
+  end
 
   def decrease_value
     memory[pointer] -= 1
   end
 
-  def method_lookup
-    METHOD_LOOKUP["+"].call(memory)
-  end
-
-  def parse
+  def run_methods
     interpreter_stream.each do |command|
-      sym = METHOD_LOOKUP[command]
-      send(sym)
+      method_name = METHOD_LOOKUP[command]
+      send(method_name)
     end
   end
 
