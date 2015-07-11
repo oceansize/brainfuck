@@ -3,10 +3,13 @@ class Brainfuck
   attr_reader   :interpreter_stream
   attr_accessor :memory, :pointer
 
-  METHOD_LOOKUP = { "+" => :increase_value,
-                    "-" => :decrease_value
+  METHOD_LOOKUP = {
+                    "+" => :increase_value,
+                    "-" => :decrease_value,
+                    ">" => :increment_pointer,
+                    "<" => :decrement_pointer,
+                    "." => :translate
                   }
-
 
   def initialize
     @memory  = Array.new(30000, 0)
@@ -31,6 +34,15 @@ class Brainfuck
 
   def decrease_value
     memory[pointer] -= 1
+  end
+
+  def translate
+    memory[pointer] = memory[pointer].chr
+  end
+
+  def output
+    processed_characters = memory.select { |index| index unless index == 0 }
+    processed_characters.join
   end
 
   def run_methods

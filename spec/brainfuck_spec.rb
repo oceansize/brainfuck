@@ -52,6 +52,18 @@ describe Brainfuck do
       interpreter.decrease_value
       expect(interpreter.memory[2]).to eq(0)
     end
+
+    it 'is able to translate an integer into ascii characters' do
+      interpreter.memory[0] = 65
+      interpreter.translate
+      expect(interpreter.memory[0]).to eq("A")
+    end
+
+    it 'is able to output the parsed commands' do
+      interpreter.memory[0] = 89
+      interpreter.translate
+      expect(interpreter.output).to eq("Y")
+    end
   end
 
   context 'when it recognises valid input' do
@@ -69,6 +81,28 @@ describe Brainfuck do
       interpreter.receive_instructions("-")
       interpreter.run_methods
       expect(interpreter.memory.first).to eq(0)
+    end
+
+    it 'increments the position of the pointer when it sees a ">"' do
+      interpreter.receive_instructions(">")
+      interpreter.run_methods
+      expect(interpreter.pointer).to eq(1)
+    end
+
+    it 'decrements the position of the pointer when it sees a "<"' do
+      set_pointer_to_third_position
+
+      interpreter.receive_instructions("<")
+      interpreter.run_methods
+      expect(interpreter.pointer).to eq(1)
+    end
+
+    it 'returns the ascii character at the current pointer position' do
+      interpreter.memory[0] = 65
+
+      interpreter.receive_instructions(".")
+      interpreter.run_methods
+      expect(interpreter.memory[0]).to eq("A")
     end
   end
 
