@@ -1,19 +1,21 @@
 class Brainfuck
 
   attr_reader   :interpreter_stream
-  attr_accessor :memory, :pointer
+  attr_accessor :memory, :pointer, :input
 
   METHOD_LOOKUP = {
                     "+" => :increase_value,
                     "-" => :decrease_value,
                     ">" => :increment_pointer,
                     "<" => :decrement_pointer,
-                    "." => :translate
+                    "." => :translate,
+                    "," => :assign_input
                   }
 
   def initialize
     @memory  = Array.new(30000, 0)
     @pointer = 0
+    @input = nil
   end
 
   def receive_instructions(user_string)
@@ -38,6 +40,10 @@ class Brainfuck
 
   def translate
     memory[pointer] = memory[pointer].chr
+  end
+
+  def assign_input
+    memory[pointer] = input
   end
 
   def output

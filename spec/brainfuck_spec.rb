@@ -97,12 +97,19 @@ describe Brainfuck do
       expect(interpreter.pointer).to eq(1)
     end
 
-    it 'returns the ascii character at the current pointer position' do
+    it 'returns the ascii character at pointer when it sees a "."' do
       interpreter.memory[0] = 65
 
       interpreter.receive_instructions(".")
       interpreter.run_methods
       expect(interpreter.memory[0]).to eq("A")
+    end
+
+    it 'assigns an input value at pointer when it sees a ","' do
+      interpreter.input = "z"
+      interpreter.receive_instructions(",")
+      interpreter.run_methods
+      expect(interpreter.memory[0]).to eq("z")
     end
   end
 
