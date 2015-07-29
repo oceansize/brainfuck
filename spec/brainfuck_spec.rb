@@ -111,11 +111,15 @@ describe Brainfuck do
       interpreter.run_methods
       expect(interpreter.memory[0]).to eq("z")
     end
+
+    it 'loops between instructions set between "[" and "]"' do
+      interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
+      interpreter.run_methods
+      expect(interpreter.output).to eq("A")
+    end
   end
 
   def set_pointer_to_third_position
     interpreter.pointer = 2
   end
 end
-
-

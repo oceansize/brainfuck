@@ -1,7 +1,7 @@
 class Brainfuck
 
-  attr_reader   :interpreter_stream
-  attr_accessor :memory, :pointer, :input
+  attr_reader   :interpreter_stream, :loop_end
+  attr_accessor :memory, :pointer, :input, :counter
 
   METHOD_LOOKUP = {
                     "+" => :increase_value,
@@ -9,7 +9,9 @@ class Brainfuck
                     ">" => :increment_pointer,
                     "<" => :decrement_pointer,
                     "." => :translate,
-                    "," => :assign_input
+                    "," => :assign_input,
+                    "[" => :loop,
+                    "]" => :end_of_loop
                   }
 
   def initialize
@@ -44,6 +46,16 @@ class Brainfuck
 
   def assign_input
     memory[pointer] = input
+  end
+
+  def loop
+    @counter = memory[pointer]
+    #self.pointer = loop_end if counter == 0
+  end
+
+  def end_of_loop
+    @loop_end = self.pointer + 1
+    #require 'pry'; binding.pry
   end
 
   def output
