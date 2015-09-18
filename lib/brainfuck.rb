@@ -1,6 +1,6 @@
 class Brainfuck
 
-  attr_reader   :interpreter_stream
+  attr_reader   :interpreter_stream, :loop_counter
   attr_accessor :memory, :pointer, :input
 
   METHOD_LOOKUP = {
@@ -9,11 +9,15 @@ class Brainfuck
                     ">" => :increment_pointer,
                     "<" => :decrement_pointer,
                     "." => :translate,
-                    "," => :assign_input
+                    "," => :assign_input,
+                    "[" => :begin_loop,
+                    "]" => :finish_loop
                   }
 
   def initialize
-    @memory  = Array.new(30000, 0)
+    @memory  = Array.new(10, 0)
+    # TODO: Revert to larger array for production version.
+    #@memory  = Array.new(30000, 0)
     @pointer = 0
     @input = nil
   end
@@ -44,6 +48,18 @@ class Brainfuck
 
   def assign_input
     memory[pointer] = input
+  end
+
+  def begin_loop
+    assign_counter
+  end
+
+  def assign_counter
+    @loop_counter = memory[pointer]
+  end
+
+  def assign_loop_start
+    @loop_start = interpreter_stream
   end
 
   def output
