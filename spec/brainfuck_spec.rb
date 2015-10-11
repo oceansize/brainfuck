@@ -67,9 +67,6 @@ describe Brainfuck do
     end
   end
 
-  it 'logs the current index of the interpreter stream when parsing commands' do
-  end
-
   context 'when it recognises valid input' do
 
     it 'increments the value at the current pointer when it sees a "+"' do
@@ -116,28 +113,10 @@ describe Brainfuck do
       expect(interpreter.memory[0]).to eq("z")
     end
 
-    it 'creates a loop counter when it sees a "["' do
-      interpreter.receive_instructions("+++++[")
-      interpreter.run_methods
-      expect(interpreter.loop_counter).to eq(5)
-    end
-
-    it 'creates a "begin loop" boundary when it sees a "["' do
-      interpreter.receive_instructions("++>+++[")
-      interpreter.run_methods
-      expect(interpreter.loop_start).to eq(1)
-    end
-
     xit 'loops between instructions set between "[" and "]"' do
       interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
       interpreter.run_methods
       expect(interpreter.output).to eq("A")
-    end
-
-    xit 'loops between instructions set between "[" and "]"' do
-      interpreter.receive_instructions("+++[>+++<-]")
-      interpreter.run_methods
-      expect(interpreter.memory[1]).to eq(9)
     end
   end
 

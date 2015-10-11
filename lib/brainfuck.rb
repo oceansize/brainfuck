@@ -1,6 +1,6 @@
 class Brainfuck
 
-  attr_reader   :interpreter_stream, :loop_counter
+  attr_reader   :interpreter_stream
   attr_accessor :memory, :pointer, :input
 
   METHOD_LOOKUP = {
