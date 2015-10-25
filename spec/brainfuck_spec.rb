@@ -113,10 +113,19 @@ describe Brainfuck do
       expect(interpreter.memory[0]).to eq("z")
     end
 
-    xit 'loops between instructions set between "[" and "]"' do
-      interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
-      interpreter.run_methods(0)
-      expect(interpreter.output).to eq("A")
+    context 'when looping' do
+
+      it 'knows where the loop starts' do
+        interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
+        interpreter.run_methods(0)
+        expect(interpreter.loop_start).to eq(1)
+      end
+
+      xit 'loops between instructions set between "[" and "]"' do
+        interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
+        interpreter.run_methods(0)
+        expect(interpreter.output).to eq("A")
+      end
     end
   end
 

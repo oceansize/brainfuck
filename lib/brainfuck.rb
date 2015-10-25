@@ -1,6 +1,6 @@
 class Brainfuck
 
-  attr_reader   :interpreter_stream
+  attr_reader   :interpreter_stream, :default_loop_start, :loop_end
   attr_accessor :memory, :memory_pointer, :input, :instruction_pointer
 
   METHOD_LOOKUP = {
@@ -11,7 +11,7 @@ class Brainfuck
     "." => :translate,
     "," => :assign_input,
     "[" => :begin_loop,
-    "]" => :finish_loop
+    "]" => :end_loop
   }
 
   def initialize
@@ -20,6 +20,7 @@ class Brainfuck
     #@memory  = Array.new(30000, 0)
     @memory_pointer = 0
     @input = nil
+    @default_loop_start = 0
   end
 
   def receive_instructions(user_string)
@@ -51,15 +52,24 @@ class Brainfuck
   end
 
   def begin_loop
-    assign_counter
+    create_loop_counter
   end
 
-  def assign_counter
+  def create_loop_counter
     @loop_counter = memory[memory_pointer]
+  end
+
+  def end_loop
+
   end
 
   def assign_loop_start
     @loop_start = interpreter_stream
+    @loop_end = find_next_loop_close
+  end
+
+  def find_next_loop_close
+    interpreter_stream.find_index(']')
   end
 
   def output
@@ -71,13 +81,13 @@ class Brainfuck
     interpreter_stream.length
   end
 
-  def run_methods(counter)
-    return if counter == end_of_interpreter_stream
+  def run_methods(first_index, last_index: end_of_interpreter_stream)
+    return if first_index == last_index
 
-    current_command = interpreter_stream[counter]
+    current_command = interpreter_stream[first_index]
     call_method(current_command)
 
-    run_methods(counter + 1)
+    run_methods(first_index + 1)
   end
 
   def call_method(interpreter_stream_position)
