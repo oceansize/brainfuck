@@ -52,20 +52,13 @@ class Brainfuck
   end
 
   def begin_loop
-    create_loop_counter
-  end
-
-  def create_loop_counter
-    @loop_counter = memory[memory_pointer]
   end
 
   def end_loop
-
   end
 
-  def assign_loop_start
-    @loop_start = interpreter_stream
-    @loop_end = find_next_loop_close
+  def find_next_loop_open
+    interpreter_stream.find_index('[')
   end
 
   def find_next_loop_close
@@ -94,12 +87,4 @@ class Brainfuck
     method_name = METHOD_LOOKUP[interpreter_stream_position]
     send(method_name)
   end
-
-  #def run_methods
-    #interpreter_stream.each do |command|
-      #method_name = METHOD_LOOKUP[command]
-      #send(method_name)
-    #end
-  #end
-
 end
