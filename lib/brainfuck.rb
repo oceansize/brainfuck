@@ -1,16 +1,16 @@
 class Brainfuck
 
   attr_reader   :interpreter_stream, :default_loop_start, :loop_end
-  attr_accessor :memory, :memory_pointer, :input, :instruction_pointer
+  attr_accessor :memory, :memory_pointer, :input, :instruction_pointer, :loop_counter
 
-  METHOD_LOOKUP = {
+  BRAINFUCK_METHODS = {
     "+" => :increase_value,
     "-" => :decrease_value,
     ">" => :increment_memory_pointer,
     "<" => :decrement_memory_pointer,
     "." => :translate,
     "," => :assign_input,
-    "[" => :begin_loop,
+    "[" => :begin_loop_iteration,
     "]" => :end_loop
   }
 
@@ -51,14 +51,19 @@ class Brainfuck
     memory[memory_pointer] = input
   end
 
-  def begin_loop
+  def begin_loop_iteration
+    @loop_counter = 4
   end
 
   def end_loop
   end
 
-  def find_next_loop_open
-    interpreter_stream.find_index('[')
+  #def find_next_loop_open
+    #interpreter_stream.find_index('[')
+  #end
+
+  def loop_start_position
+
   end
 
   def find_next_loop_close
@@ -74,17 +79,21 @@ class Brainfuck
     interpreter_stream.length
   end
 
-  def run_methods(first_index, last_index: end_of_interpreter_stream)
-    return if first_index == last_index
+  def run_methods(current_index, last_index: end_of_interpreter_stream)
+    return if current_index == last_index
 
-    current_command = interpreter_stream[first_index]
-    call_method(current_command)
+    method_name = command_at(current_index)
+    call_method(method_name)
 
-    run_methods(first_index + 1)
+    run_methods(current_index + 1)
   end
 
   def call_method(interpreter_stream_position)
-    method_name = METHOD_LOOKUP[interpreter_stream_position]
+    method_name = BRAINFUCK_METHODS[interpreter_stream_position]
     send(method_name)
+  end
+
+  def command_at(index_position)
+    interpreter_stream[index_position]
   end
 end

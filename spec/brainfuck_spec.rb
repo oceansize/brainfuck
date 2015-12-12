@@ -116,14 +116,20 @@ describe Brainfuck do
 
     context 'when looping' do
 
-      it 'can find the index of the next opening loop command' do
-        brainfuck.receive_instructions("++[++[**]**]")
-        expect(brainfuck.find_next_loop_open).to eq(2)
-      end
+      #it 'can find the index of the next opening loop command' do
+        #brainfuck.receive_instructions("++[++[**]**]")
+        #expect(brainfuck.find_next_loop_open).to eq(2)
+      #end
 
-      it 'can find the index of the next closing loop command' do
-        brainfuck.receive_instructions("++[++[**]**]")
-        expect(brainfuck.find_next_loop_close).to eq(8)
+      #it 'can find the index of the next closing loop command' do
+        #brainfuck.receive_instructions("++[++[**]**]")
+        #expect(brainfuck.find_next_loop_close).to eq(8)
+      #end
+
+      it 'keeps track of the loop counter' do
+        brainfuck.receive_instructions("+>+++>++++[")
+        brainfuck.run_methods(0)
+        expect(brainfuck.loop_counter).to eq(4)
       end
 
       xit 'loops between instructions set between "[" and "]"' do
