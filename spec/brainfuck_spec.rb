@@ -1,4 +1,4 @@
-# http://fatiherikli.github.io/brainfuck-visualizer
+# knows how to send instructions to pointers
 
 require 'brainfuck'
 
@@ -7,11 +7,6 @@ describe Brainfuck do
   let(:interpreter) { Brainfuck.new }
 
   context 'by default' do
-
-    it 'accepts a string' do
-      interpreter.receive_instructions("+++")
-      expect(interpreter.interpreter_stream).to eq(["+", "+", "+"])
-    end
 
     it 'has a memory array containing 30,000 cells' do
       expect(interpreter.memory.size).to eq(30000)
@@ -110,12 +105,6 @@ describe Brainfuck do
       interpreter.receive_instructions(",")
       interpreter.run_methods
       expect(interpreter.memory[0]).to eq("z")
-    end
-
-    it 'loops between instructions set between "[" and "]"' do
-      interpreter.receive_instructions("++++++[>++++++++++<-]>+++++.")
-      interpreter.run_methods
-      expect(interpreter.output).to eq("A")
     end
   end
 
