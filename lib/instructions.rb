@@ -1,4 +1,4 @@
-class InstructionStream
+class Instructions
 
   attr_reader :sequence
 
