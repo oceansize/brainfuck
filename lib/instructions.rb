@@ -1,9 +1,10 @@
 class Instructions
 
-  attr_reader :sequence
+  attr_reader :sequence, :pointer
 
   def initialize(instructions)
     @sequence = sanitize(instructions)
+    @pointer = 0
   end
 
   private

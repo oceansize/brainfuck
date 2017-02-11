@@ -8,14 +8,6 @@ describe Brainfuck do
 
   context 'by default' do
 
-    it 'has a memory array containing 30,000 cells' do
-      expect(interpreter.memory.size).to eq(30000)
-    end
-
-    it 'has a pointer which is initialised to zero' do
-      expect(interpreter.pointer).to eq(0)
-    end
-
     it 'can send the pointer to an address in memory' do
       set_pointer_to_third_position
       interpreter.memory[interpreter.pointer] = :test
