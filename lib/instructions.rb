@@ -1,10 +1,12 @@
+require 'pointer'
+
 class Instructions
 
   attr_reader :sequence, :pointer
 
   def initialize(instructions)
     @sequence = sanitize(instructions)
-    @pointer = 0
+    @pointer = Pointer.new
   end
 
   private

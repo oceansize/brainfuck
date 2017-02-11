@@ -17,7 +17,7 @@ describe Instructions do
 
     it 'has an instruction pointer which is initialised to zero' do
       stream = Instructions.new("+++")
-      expect(stream.pointer).to eq 0
+      expect(stream.pointer.position).to eq 0
     end
 
 end
