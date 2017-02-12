@@ -4,103 +4,65 @@ require 'brainfuck'
 
 describe Brainfuck do
 
-  let(:interpreter) { Brainfuck.new }
+	let(:interpreter) { Brainfuck.new }
 
-  context 'by default' do
+	context 'by default' do
 
-    it 'can send the pointer to an address in memory' do
-      set_pointer_to_third_position
-      interpreter.memory[interpreter.pointer] = :test
-      expect(interpreter.memory[2]).to eq(:test)
-    end
+		it 'is able to translate an integer into ascii characters' do
+			interpreter.memory[0] = 65
+			interpreter.translate
+			expect(interpreter.memory[0]).to eq("A")
+		end
 
-    it 'can increment the pointer' do
-      interpreter.increment_pointer
-      expect(interpreter.pointer).to eq(1)
-    end
+		it 'is able to output the parsed commands' do
+			interpreter.memory[0] = 89
+			interpreter.translate
+			expect(interpreter.output).to eq("Y")
+		end
+	end
 
-    it 'can decrement the pointer' do
-      set_pointer_to_third_position
-      interpreter.decrement_pointer
-      expect(interpreter.pointer).to eq(1)
-    end
+	context 'when it recognises valid input' do
 
-    it 'can increase the value at a specific memory address' do
-      set_pointer_to_third_position
-      interpreter.increase_value
-      expect(interpreter.memory[2]).to eq(1)
-    end
+		it 'increments the value at the current pointer when it sees a "+"' do
+			interpreter.receive_instructions("+")
+			interpreter.run_methods
+			expect(interpreter.memory.first).to eq(1)
+		end
 
-    it 'can decrease the value at a specific memory address' do
-      set_pointer_to_third_position
-      interpreter.increase_value
-      expect(interpreter.memory[2]).to eq(1)
+		it 'decrements the value at the current pointer when it sees a "-"' do
+			interpreter.increase_value
+			expect(interpreter.memory.first).to eq(1)
 
-      interpreter.decrease_value
-      expect(interpreter.memory[2]).to eq(0)
-    end
+			interpreter.receive_instructions("-")
+			interpreter.run_methods
+			expect(interpreter.memory.first).to eq(0)
+		end
 
-    it 'is able to translate an integer into ascii characters' do
-      interpreter.memory[0] = 65
-      interpreter.translate
-      expect(interpreter.memory[0]).to eq("A")
-    end
+		it 'increments the position of the pointer when it sees a ">"' do
+			interpreter.receive_instructions(">")
+			interpreter.run_methods
+			expect(interpreter.pointer).to eq(1)
+		end
 
-    it 'is able to output the parsed commands' do
-      interpreter.memory[0] = 89
-      interpreter.translate
-      expect(interpreter.output).to eq("Y")
-    end
-  end
+		it 'decrements the position of the pointer when it sees a "<"' do
+			interpreter.receive_instructions("<")
+			interpreter.run_methods
+			expect(interpreter.pointer).to eq(-1)
+		end
 
-  context 'when it recognises valid input' do
+		it 'returns the ascii character at pointer when it sees a "."' do
+			interpreter.memory[0] = 65
 
-    it 'increments the value at the current pointer when it sees a "+"' do
-      interpreter.receive_instructions("+")
-      interpreter.run_methods
-      expect(interpreter.memory.first).to eq(1)
-    end
+			interpreter.receive_instructions(".")
+			interpreter.run_methods
+			expect(interpreter.memory[0]).to eq("A")
+		end
 
-    it 'decrements the value at the current pointer when it sees a "-"' do
-      interpreter.increase_value
-      expect(interpreter.memory.first).to eq(1)
-
-      interpreter.receive_instructions("-")
-      interpreter.run_methods
-      expect(interpreter.memory.first).to eq(0)
-    end
-
-    it 'increments the position of the pointer when it sees a ">"' do
-      interpreter.receive_instructions(">")
-      interpreter.run_methods
-      expect(interpreter.pointer).to eq(1)
-    end
-
-    it 'decrements the position of the pointer when it sees a "<"' do
-      set_pointer_to_third_position
-
-      interpreter.receive_instructions("<")
-      interpreter.run_methods
-      expect(interpreter.pointer).to eq(1)
-    end
-
-    it 'returns the ascii character at pointer when it sees a "."' do
-      interpreter.memory[0] = 65
-
-      interpreter.receive_instructions(".")
-      interpreter.run_methods
-      expect(interpreter.memory[0]).to eq("A")
-    end
-
-    it 'assigns an input value at pointer when it sees a ","' do
-      interpreter.input = "z"
-      interpreter.receive_instructions(",")
-      interpreter.run_methods
-      expect(interpreter.memory[0]).to eq("z")
-    end
-  end
-
-  def set_pointer_to_third_position
-    interpreter.pointer = 2
-  end
+		it 'assigns an input value at pointer when it sees a ","' do
+			interpreter.input = "z"
+			interpreter.receive_instructions(",")
+			interpreter.run_methods
+			expect(interpreter.memory[0]).to eq("z")
+		end
+	end
 end
