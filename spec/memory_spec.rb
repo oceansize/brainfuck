@@ -22,7 +22,7 @@ describe Memory do
     end
 
     it "that position can be decreased" do
-      memory.move_location_backwards
+      memory.move_location_backward
       expect(memory.current_location).to eq -1
     end
   end

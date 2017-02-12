@@ -9,6 +9,18 @@ class Instructions
     @pointer = Pointer.new
   end
 
+  def current_location
+    pointer.position
+  end
+
+  def move_location_forward
+    pointer.increment
+  end
+
+  def move_location_backward
+    pointer.decrement
+  end
+
   private
 
   def sanitize(instructions)

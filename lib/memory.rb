@@ -17,7 +17,7 @@ class Memory
     pointer.increment
   end
 
-  def move_location_backwards
+  def move_location_backward
     pointer.decrement
   end
 end

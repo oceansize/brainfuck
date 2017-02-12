@@ -1,31 +1,39 @@
+# Keeps track of instructions from user
+
 require 'instructions'
 
 describe Instructions do
 
-  it "Converts input into a sequence of instructions" do
-    stream = Instructions.new("+++")
-    expect(stream.sequence).to eq ["+", "+", "+"]
+  let(:stream) { Instructions.new("+++") }
+
+  context "when initialized" do
+    it "Converts input into a sequence of instructions" do
+      expect(stream.sequence).to eq ["+", "+", "+"]
+    end
+
+    it "rejects incorrect data types" do
+      expect { Instructions.new(666) }.to raise_error "Invalid syntax"
+    end
+
+    it "rejects incorrect syntax" do
+      expect { Instructions.new("+~+") }.to raise_error "Invalid command"
+    end
   end
 
-  it "will not accept anything else" do
-    expect { Instructions.new(666) }.to raise_error "Invalid syntax"
-  end
+  describe "in order to move through instructions" do
+    it "has a pointer location" do
+      expect(stream.current_location).to eq 0
+    end
 
-  it "will reject incorrect syntax" do
-    expect { Instructions.new("+~+") }.to raise_error "Invalid command"
-  end
+    it "which can move forwards" do
+      stream.move_location_forward
+      expect(stream.current_location).to eq 1
+    end
 
-  it 'has an instruction pointer which is initialised to zero' do
-    stream = Instructions.new("+++")
-    allow(stream.pointer).to receive(:position).and_return(0)
-    expect(stream.pointer.position).to eq 0
-  end
-
-  it "can increment the pointer" do
-    stream = Instructions.new("+++")
-    expect(stream.pointer.position).to eq 0
-    stream.pointer.increment
-    expect(stream.pointer.position).to eq 1
+    it "which can move backwards" do
+      stream.move_location_backward
+      expect(stream.current_location).to eq -1
+    end
   end
 
 end
