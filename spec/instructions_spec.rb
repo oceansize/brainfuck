@@ -20,6 +20,10 @@ describe Instructions do
     end
   end
 
+  it "returns the value at the current location" do
+    expect(stream.value).to eq "+"
+  end
+
   describe "in order to move through instructions" do
     it "has a pointer location" do
       expect(stream.current_location).to eq 0

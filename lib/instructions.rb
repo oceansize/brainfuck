@@ -21,6 +21,10 @@ class Instructions
     pointer.decrement
   end
 
+  def value
+    sequence[current_location]
+  end
+
   private
 
   def sanitize(instructions)
