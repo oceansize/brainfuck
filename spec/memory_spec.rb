@@ -1,3 +1,5 @@
+# Holds values as assigned by brainfuck
+
 require 'memory'
 
 describe Memory do
@@ -11,8 +13,7 @@ describe Memory do
   describe "has a pointer" do
 
     it "which has a position" do
-      allow(memory.pointer).to receive(:position).and_return(0)
-      expect(memory.pointer.position).to eq 0
+      expect(memory.current_location).to eq 0
     end
 
     it "can increment the pointer" do
@@ -27,11 +28,15 @@ describe Memory do
     end
 
     it "can decrement the pointer" do
+      allow(memory.pointer).to receive(:position).and_return(0)
       expect(memory.pointer.position).to eq 0
-      memory.pointer.decrement
-      expect(memory.pointer.position).to eq(-1)
-    end
 
+      allow(memory.pointer).to receive(:increment)
+      memory.pointer.increment
+
+      allow(memory.pointer).to receive(:position).and_return(1)
+      expect(memory.pointer.position).to eq 1
+    end
   end
 
 end
