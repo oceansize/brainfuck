@@ -12,4 +12,12 @@ class Memory
   def current_location
     pointer.position
   end
+
+  def move_location_forward
+    pointer.increment
+  end
+
+  def move_location_backwards
+    pointer.decrement
+  end
 end

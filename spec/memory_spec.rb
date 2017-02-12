@@ -16,26 +16,14 @@ describe Memory do
       expect(memory.current_location).to eq 0
     end
 
-    it "can increment the pointer" do
-      allow(memory.pointer).to receive(:position).and_return(0)
-      expect(memory.pointer.position).to eq 0
-
-      allow(memory.pointer).to receive(:increment)
-      memory.pointer.increment
-
-      allow(memory.pointer).to receive(:position).and_return(1)
-      expect(memory.pointer.position).to eq 1
+    it "that position can be increased" do
+      memory.move_location_forward
+      expect(memory.current_location).to eq 1
     end
 
-    it "can decrement the pointer" do
-      allow(memory.pointer).to receive(:position).and_return(0)
-      expect(memory.pointer.position).to eq 0
-
-      allow(memory.pointer).to receive(:increment)
-      memory.pointer.increment
-
-      allow(memory.pointer).to receive(:position).and_return(1)
-      expect(memory.pointer.position).to eq 1
+    it "that position can be decreased" do
+      memory.move_location_backwards
+      expect(memory.current_location).to eq -1
     end
   end
 
