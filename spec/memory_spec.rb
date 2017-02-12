@@ -6,8 +6,16 @@ describe Memory do
 
   let(:memory) { Memory.new }
 
-  it "has 30000 slots" do
-    expect(memory.slots.size).to eq 30000
+  context "by default" do
+
+    it "has 30000 slots" do
+      expect(memory.capacity).to eq 30000
+    end
+  end
+
+  it "can have a custom capacity" do
+    small_memory = Memory.new(size: 10)
+    expect(small_memory.capacity).to eq 10
   end
 
   describe "has a pointer" do

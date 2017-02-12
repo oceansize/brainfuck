@@ -4,9 +4,13 @@ class Memory
 
   attr_reader :slots, :pointer
 
-  def initialize
-    @slots = Array.new(30000, 0)
+  def initialize(size: 30000, default_content: 0)
+    @slots = Array.new(size, default_content)
     @pointer = Pointer.new
+  end
+
+  def capacity
+    slots.size
   end
 
   def current_location
