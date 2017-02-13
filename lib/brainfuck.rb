@@ -12,8 +12,8 @@ class Brainfuck
     "<" => :decrement_pointer,
     "." => :translate,
     "," => :assign_input,
-    "[" => :loop,
-    "]" => :end_of_loop
+    "[" => :loop_start,
+    "]" => :loop_end
   }
 
   def initialize(user_commands)
